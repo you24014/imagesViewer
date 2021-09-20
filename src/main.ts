@@ -20,13 +20,18 @@ import '@ionic/vue/css/text-transformation.css';
 import '@ionic/vue/css/flex-utils.css';
 import '@ionic/vue/css/display.css';
 
+/* Axios */
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
 /* Theme variables */
 import './theme/variables.css';
 
 const app = createApp(App)
   .use(IonicVue)
-  .use(router);
-  
+  .use(router)
+  .use(VueAxios, axios);
+
 router.isReady().then(() => {
   app.mount('#app');
 });
