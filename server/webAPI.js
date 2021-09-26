@@ -32,9 +32,10 @@ app.use(express.urlencoded({ extended: true }));
  * 
  */
 app.get('/getImageDirs', function (req, res) {
-	basePath = 'images/'
+	basePath = './public/images/'
 	oldPathInfo = getPathInfo(basePath, 'old/');
-	newPathInfo = getPathInfo(basePath, 'new/')
+	newPathInfo = getPathInfo(basePath, 'new/');
+	// oldPathInfo.forEach(pathInfo)
 	res.json({ old: oldPathInfo, new: newPathInfo });
 });
 
@@ -51,14 +52,19 @@ app.listen(3000, function () {
  * return pathInfo
  */
 function getPathInfo(basePath, searchPath) {
-	pathInfo = []
-	glob(basePath + searchPath + '**/*', { nodir: true }, (err, files) => {
-		files.forEach(file => {
-			pathInfo.push({
-				dirName: path.dirname(file),
-				fileName: path.basename(file)
-			})
-		})
+	var files = glob.sync(basePath + searchPath + '**/*', { nodir: true });
+	pathInfo = [];
+	files.forEach(file => {
+		dirName = path.dirname(file);
+		fileName = path.basename(file);
+		splittedDir = dirName.split("/");
+		pathInfo.push({
+			dirName: dirName,
+			fileName: fileName,
+			platform: splittedDir[4],
+			scenarioName: splittedDir[5],
+			actionName: splittedDir[6]
+		});
 	});
 	return pathInfo;
 }
