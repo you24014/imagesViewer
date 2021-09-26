@@ -1,56 +1,99 @@
 <template>
   <IonApp>
-    <IonSplitPane content-id="main-content">
-      <ion-menu content-id="main-content" type="overlay">
+    <ion-menu side="start" menu-id="first" type="overlay" content-id="main">
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>Start Menu</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-menu-toggle auto-hide="false" v-for="(p, i) in appPages" :key="i">
+          <ion-item
+            @click="selectedIndex = i"
+            router-direction="root"
+            :router-link="p.url"
+            lines="none"
+            detail="false"
+            class="hydrated"
+            :class="{ selected: selectedIndex === i }"
+          >
+            <ion-icon slot="start" :ios="p.iosIcon" :md="p.mdIcon"></ion-icon>
+            <ion-label>{{ p.title }}</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-chip>
+          <ion-label>Default</ion-label>
+        </ion-chip>
+
+        <ion-chip>
+          <ion-label color="secondary">Secondary Label</ion-label>
+        </ion-chip>
+
+        <ion-chip color="secondary">
+          <ion-label color="dark">Secondary w/ Dark label</ion-label>
+        </ion-chip>
+
+        <ion-chip :disabled="true">
+          <ion-label>Disabled Chip</ion-label>
+        </ion-chip>
+
+        <ion-chip>
+          <ion-icon :icon="pin"></ion-icon>
+          <ion-label>Default</ion-label>
+        </ion-chip>
+
+        <ion-chip>
+          <ion-icon :icon="heart" color="dark"></ion-icon>
+          <ion-label>Default</ion-label>
+        </ion-chip>
+
+        <ion-chip>
+          <ion-label>Button Chip</ion-label>
+          <ion-icon :icon="closeCircle"></ion-icon>
+        </ion-chip>
+
+        <ion-chip>
+          <ion-icon :icon="pin" color="primary"></ion-icon>
+          <ion-label>Icon Chip</ion-label>
+          <ion-icon :icon="close"></ion-icon>
+        </ion-chip>
+
+        <ion-chip>
+          <ion-avatar>
+            <img
+              src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
+            />
+          </ion-avatar>
+          <ion-label>Avatar Chip</ion-label>
+          <ion-icon :icon="closeCircle"></ion-icon>
+        </ion-chip>
+      </ion-content>
+    </ion-menu>
+
+    <!-- <ion-router-outlet id="main"></ion-router-outlet> -->
+    <!-- <ion-menu content-id="main-content" type="overlay">
         <ion-content>
-          <ion-list id="inbox-list">
-            <ion-list-header>Inbox</ion-list-header>
-            <ion-note>hi@ionicframework.com</ion-note>
-
-            <ion-menu-toggle
-              auto-hide="false"
-              v-for="(p, i) in appPages"
-              :key="i"
-            >
-              <ion-item
-                @click="selectedIndex = i"
-                router-direction="root"
-                :router-link="p.url"
-                lines="none"
-                detail="false"
-                class="hydrated"
-                :class="{ selected: selectedIndex === i }"
-              >
-                <ion-icon
-                  slot="start"
-                  :ios="p.iosIcon"
-                  :md="p.mdIcon"
-                ></ion-icon>
-                <ion-label>{{ p.title }}</ion-label>
-              </ion-item>
-            </ion-menu-toggle>
-          </ion-list>
-
-          <!-- <ion-list id="labels-list">
-            <ion-list-header>Labels</ion-list-header>
-
+          <ion-menu-toggle
+            auto-hide="false"
+            v-for="(p, i) in appPages"
+            :key="i"
+          >
             <ion-item
-              v-for="(label, index) in labels"
+              @click="selectedIndex = i"
+              router-direction="root"
+              :router-link="p.url"
               lines="none"
-              :key="index"
+              detail="false"
+              class="hydrated"
+              :class="{ selected: selectedIndex === i }"
             >
-              <ion-icon
-                slot="start"
-                :ios="bookmarkOutline"
-                :md="bookmarkSharp"
-              ></ion-icon>
-              <ion-label>{{ label }}</ion-label>
+              <ion-icon slot="start" :ios="p.iosIcon" :md="p.mdIcon"></ion-icon>
+              <ion-label>{{ p.title }}</ion-label>
             </ion-item>
-          </ion-list> -->
+          </ion-menu-toggle>
         </ion-content>
-      </ion-menu>
-      <ion-router-outlet id="main-content"></ion-router-outlet>
-    </IonSplitPane>
+      </ion-menu> -->
+    <ion-router-outlet id="main"></ion-router-outlet>
   </IonApp>
 </template>
 
@@ -68,6 +111,9 @@ import {
   IonNote,
   IonRouterOutlet,
   IonSplitPane,
+  menuController,
+  IonAvatar,
+  IonChip,
 } from "@ionic/vue";
 import { defineComponent, ref } from "vue";
 import { useRoute } from "vue-router";
@@ -86,6 +132,10 @@ import {
   trashSharp,
   warningOutline,
   warningSharp,
+  close,
+  closeCircle,
+  heart,
+  pin,
 } from "ionicons/icons";
 
 export default defineComponent({
@@ -103,13 +153,11 @@ export default defineComponent({
     IonNote,
     IonRouterOutlet,
     IonSplitPane,
-  },
-  data() {
-    return {
-      info: null,
-    };
+    IonAvatar,
+    IonChip,
   },
   setup() {
+    const info = null;
     const selectedIndex = ref(0);
     const appPages = [
       {
@@ -185,6 +233,11 @@ export default defineComponent({
       trashSharp,
       warningOutline,
       warningSharp,
+      close,
+      closeCircle,
+      heart,
+      pin,
+      info,
       isSelected: (url: string) => (url === route.path ? "selected" : ""),
     };
   },
@@ -197,6 +250,7 @@ export default defineComponent({
         this.info = response;
       });
   },
+  methods: {},
 });
 </script>
 
